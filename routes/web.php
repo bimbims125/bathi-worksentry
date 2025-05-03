@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\GeofenceController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\User\ClockInController;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,12 @@ Route::prefix('/auth')->group(function (){
 Route::prefix('/dashboard')->group(function (){
     Route::controller(DashboardController::class)->group(function (){
         Route::get('', 'index')->name('dashboard.index');
+    });
+});
+
+Route::prefix('/admin')->group(function (){
+    Route::controller(GeofenceController::class)->group(function (){
+        Route::get('/geofence', 'index')->name('admin.geofence.index');
     });
 });
 
