@@ -27,15 +27,15 @@ Route::prefix('/auth')->group(function (){
     });
 });
 
-Route::prefix('/dashboard')->group(function (){
-    Route::controller(DashboardController::class)->group(function (){
-        Route::get('', 'index')->name('dashboard.index');
-    });
-});
 
 Route::prefix('/admin')->group(function (){
+    Route::controller(DashboardController::class)->group(function (){
+        Route::get('/dashboard', 'index')->name('admin.dashboard.index');
+    });
+
     Route::controller(GeofenceController::class)->group(function (){
         Route::get('/geofence', 'index')->name('admin.geofence.index');
+        Route::post('/geofence', 'store')->name('admin.geofence.store');
     });
 });
 

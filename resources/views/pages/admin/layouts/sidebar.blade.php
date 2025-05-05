@@ -51,9 +51,15 @@
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
                 <div class="nav-item">
-                    <a class="nav-link menu-link {{ request()->routeIs('dashboard.index') ? 'active' : '' }}"
-                        href="{{route('dashboard.index')}}" aria-expanded="false">
-                        <i class=" ri-dashboard-2-line"></i><span data-key="t-datamaster">Dashboard</span>
+                    <a class="nav-link menu-link {{ request()->routeIs('admin.dashboard.index') ? 'active' : '' }}"
+                        href="{{route('admin.dashboard.index')}}" aria-expanded="false">
+                        <i class=" ri-dashboard-2-line"></i><span data-key="t-dashboard">Dashboard</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link menu-link {{ request()->routeIs('admin.geofence.index') ? 'active' : '' }}"
+                        href="{{route('admin.geofence.index')}}" aria-expanded="false">
+                        <i class=" ri-map-line"></i><span data-key="t-geofence">Geofence</span>
                     </a>
                 </div>
 

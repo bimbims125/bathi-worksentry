@@ -32,6 +32,12 @@
 <!-- End leaflet -->
 <script>
     $(document).ready(function () {
+         // Get all form
+        const coordinatesForm = $('#coordinates');
+        const typeForm = $('#type');
+        const centerForm = $('#center');
+        const radiusForm = $('#radius');
+
         // $('#geofenceTable').DataTable({
         //     processing: true,
         //     serverSide: true,
@@ -50,10 +56,67 @@
         //     responsive: true,
         // });
         let map = L.map('map').setView([-6.464074197735817, 106.84978143128386], 18);
+        const drawnItems = new L.FeatureGroup();
+        map.addLayer(drawnItems);
 
+        const drawControl = new L.Control.Draw({
+            draw: {
+                polygon: {
+                    allowIntersection: false,
+                    showArea: true,
+                    shapeOptions: {
+                        color: 'green',
+                        fillColor: 'green',
+                        fillOpacity: 0.1,
+                    }
+                },
+                circle: {
+                    showArea: true,
+                    shapeOptions: {
+                        color: 'green',
+                        fillColor: 'green',
+                        fillOpacity: 0.1,
+                    }
+                },
+                polyline: false,
+                marker: false,
+                rectangle: false,
+                circlemarker: false
+            }
+        });
+        map.addControl(drawControl);
+
+        // Add tile layer
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">'
         }).addTo(map);
+
+         // Event when shape is drawn
+        map.on('draw:created', (e) => {
+                const layer = e.layer;
+                if (layer instanceof L.Circle) {
+                    const center = layer.getLatLng();
+                    const radius = layer.getRadius();
+                    typeForm.val('circle');
+                    radiusForm.val(radius);
+                    centerForm.val(JSON.stringify([center.lat, center.lng]));
+                    coordinatesForm.val(0);
+                } else {
+                    const coordinatesArray = [];
+                    const latlngs = layer.getLatLngs();
+                    latlngs.flat().forEach((point) => coordinatesArray.push([point.lat, point
+                        .lng
+                    ]));
+                    coordinatesForm.val(JSON.stringify(coordinatesArray));
+                    typeForm.val('polygon');
+                }
+                $('#geofencesModal').modal('show');
+                drawnItems.addLayer(layer);
+            });
+
+            $('#geofencesModal').on('hidden.bs.modal', () => {
+                drawnItems.clearLayers();
+            });
 
         // Draw Geofences
         const geofences = @json($geofences);
@@ -93,10 +156,52 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title">Geofence List</h4>
+                <h4 class="card-title">Geofences</h4>
             </div>
             <div class="card-body">
                 <div id="map" style="height: 500px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Geofence Modal -->
+<div class="modal fade" id="geofencesModal" tabindex="-1" aria-labelledby="exampleModalgridLabel" aria-modal="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalgridLabel">Create Geofences</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('admin.geofence.store')}}" method="POST" autocomplete="off">
+                    @csrf
+                    <div class="row g-3">
+                        <div class="col-xxl-12">
+                            <div class="mb-3">
+                                <label for="location_name" class="form-label">Location Name</label>
+                                <input type="text" class="form-control" id="locationName" name="name"
+                                    placeholder="Enter Location name" required>
+                            </div>
+                            <div class="mb-3">
+                                <input hidden name="type" type="text" class="form-control" id="type" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <input hidden name="radius" type="text" class="form-control" id="radius" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <textarea hidden name="coordinates" class="form-control" id="coordinates"
+                                    readonly></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <input hidden name="center" type="text" class="form-control" id="center" readonly>
+                            </div>
+                            <div class="hstack gap-2 justify-content-end">
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

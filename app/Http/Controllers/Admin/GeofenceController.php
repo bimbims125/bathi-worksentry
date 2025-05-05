@@ -14,4 +14,17 @@ class GeofenceController extends Controller
         // dd($geofences);
         return view('pages.admin.geofence.index', compact('geofences'));
     }
+    public function store(Request $request){
+        // dd($request->all());
+        $validatedData = $request->validate([
+            'name'=>'required',
+            'coordinates'=>'required',
+            'radius'=>'nullable',
+            'center'=>'nullable',
+            'type'=>'nullable'
+        ]);
+        // dd($validatedData);
+        Geofence::create($validatedData);
+        return redirect('/admin/geofence');
+    }
 }
