@@ -41,6 +41,7 @@ Route::prefix('/admin')->group(function (){
 
 Route::prefix('/user')->group(function (){
     Route::controller(ClockInController::class)->group(function (){
-        Route::get('/clock-in', 'index');
+        Route::get('/clock-in', 'index')->name('user.clock-in.index');
+        Route::post('/clock-in', 'store')->name('user.clock-in.store');
     });
 });
