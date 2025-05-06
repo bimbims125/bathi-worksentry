@@ -47,7 +47,7 @@
                                             aria-label="Close"></button>
                                     </div>
                                 @endif
-                                <form action="" method="POST" autocomplete="on">
+                                <form action="{{ route('auth.authenticate')}}" method="POST" autocomplete="on">
                                     @csrf
                                     <div class="mb-3">
                                         <label for="username" class="form-label">Username</label>

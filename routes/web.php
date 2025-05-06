@@ -21,11 +21,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::prefix('/auth')->group(function (){
-    Route::controller(AuthController::class)->group(function (){
-        Route::get('/login', 'index')->name('auth.login');
-    });
+// Auth Routes
+Route::middleware(['web'])->prefix('auth/')->controller(AuthController::class)->group(function (){
+    Route::get('login', 'index')->name('auth.login')->middleware('guest');
+    Route::post('authenticate', 'authenticate')->name('auth.authenticate');
+    // Route::get('logout', 'logout')->name('logout');
 });
+// End auth routes
 
 
 Route::prefix('/admin')->group(function (){

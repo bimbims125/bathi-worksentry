@@ -23,6 +23,7 @@ class CreateAttendancesTable extends Migration
             $table->text('clock_out_picture')->nullable();
             $table->boolean('is_late')->default(false);
             $table->integer('late_time'); // in minutes
+            $table->string('location');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });

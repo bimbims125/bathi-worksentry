@@ -5,7 +5,7 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>Sign In | SHE On My Hand SOT</title>
+    <title>Sign In | Bathi Worksentry</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />

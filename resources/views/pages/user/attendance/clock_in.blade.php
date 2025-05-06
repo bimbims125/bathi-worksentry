@@ -13,7 +13,7 @@
             <div class="card-footer">
                 <div class="col-md-6">
                     <button type="button" class="btn btn-success" id="clockInButton" data-bs-toggle="modal"
-                        data-bs-target="#clockInModal" disabled>Clock In</button>
+                        data-bs-target="#clockInModal" >Clock In</button>
                 </div>
             </div>
         </div>
@@ -48,7 +48,7 @@
                                 <input type="hidden" name="location" id="location" readonly class="form-control">
                             </div>
                             <div class="col-xxl-6">
-                                <textarea id="clockInPicture" name="checkin_picture" readonly class="form-control"
+                                <textarea id="clockInPicture" name="clock_in_picture" readonly class="form-control"
                                     style="display: none"></textarea>
                             </div>
                             <div class="col-lg-12">
@@ -191,11 +191,12 @@
                     // console.log(geofenceName)
                     // Change status of button
                     if (eligibleArea) {
-                        $('#clockInButton').prop('disabled', false); // Enable button
+                        // $('#clockInButton').prop('disabled', false); // Enable button
                         $('#location').val(geofenceName); // Set value of location input
                         $('#latlong').val(userLatLong); // Set value of latlong input
                     } else {
-                        $('#clockInButton').prop('disabled', true); // Disable button
+                        $('#latlong').val("test latlong"); // Set value of latlong input
+                        // $('#clockInButton').prop('disabled', true); // Disable button
                     }
                     // ====================================================
                 },
