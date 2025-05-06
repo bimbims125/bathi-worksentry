@@ -30,12 +30,12 @@ Route::middleware(['web'])->prefix('auth/')->controller(AuthController::class)->
 // End auth routes
 
 
-Route::prefix('/admin')->group(function (){
-    Route::controller(DashboardController::class)->group(function (){
+Route::prefix('/admin')->middleware('role:admin,superadmin')->group(function () {
+    Route::controller(DashboardController::class)->group(function () {
         Route::get('/dashboard', 'index')->name('admin.dashboard.index');
     });
 
-    Route::controller(GeofenceController::class)->group(function (){
+    Route::controller(GeofenceController::class)->group(function () {
         Route::get('/geofence', 'index')->name('admin.geofence.index');
         Route::post('/geofence', 'store')->name('admin.geofence.store');
     });
