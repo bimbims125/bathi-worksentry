@@ -25,12 +25,11 @@ Route::get('/', function () {
 Route::middleware(['web'])->prefix('auth/')->controller(AuthController::class)->group(function (){
     Route::get('login', 'index')->name('auth.login')->middleware('guest');
     Route::post('authenticate', 'authenticate')->name('auth.authenticate');
-    // Route::get('logout', 'logout')->name('logout');
+    Route::get('logout', 'logout')->name('auth.logout');
 });
 // End auth routes
 
-
-Route::prefix('/admin')->middleware('role:admin,superadmin')->group(function () {
+Route::prefix('/admin')->middleware(['auth', 'role:admin,superadmin'])->group(function () {
     Route::controller(DashboardController::class)->group(function () {
         Route::get('/dashboard', 'index')->name('admin.dashboard.index');
     });

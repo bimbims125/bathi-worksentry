@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\RedirectResponse;
 
 class AuthController extends Controller
 {
@@ -34,9 +35,9 @@ class AuthController extends Controller
             // Use Auth::attempt() to log in the user and create a session
             if (Auth::attempt(['username' => $username, 'password' => $password])) {
                 // After successful login, check if the user is an admin
-                if (Auth::user()->role == 'admin') {
+                if (Auth::user()->role == 'admin' || Auth::user()->role == 'superadmin') {
                     // Redirect to admin dashboard or admin-specific page
-                    return redirect()->route('dashboard');
+                    return redirect()->route('admin.dashboard.index');
 
                 } else {
                     // Redirect to the regular user dashboard
@@ -53,5 +54,16 @@ class AuthController extends Controller
             // If no user is found or password does not match
             return back()->withErrors(['username' => 'Invalid Username Or Email'])->withInput();
         }
+    }
+
+    public function logout(Request $request): RedirectResponse
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/auth/login');
     }
 }
