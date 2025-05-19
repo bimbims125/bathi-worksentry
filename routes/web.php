@@ -40,7 +40,7 @@ Route::prefix('/admin')->middleware(['auth', 'role:admin,superadmin'])->group(fu
     });
 });
 
-Route::prefix('/user')->group(function (){
+Route::prefix('/user')->middleware(['auth', 'role:staff'])->group(function (){
     Route::controller(ClockInController::class)->group(function (){
         Route::get('/clock-in', 'index')->name('user.clock-in.index');
         Route::post('/clock-in', 'store')->name('user.clock-in.store');
